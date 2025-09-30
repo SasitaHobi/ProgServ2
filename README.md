@@ -15,7 +15,7 @@ Cahier des charges - Gestionnaire de stock de nourriture
 
     Un utilisateur a son propre stock, qu’il gère tout seul 
 
-    Rôle administrateur serait nous, qui lui a accès à tout (règle questions utilisateurs) 
+    Rôle administrateur serait nous, qui avons accès à tout (pour régler questions utilisateurs) 
 
  
 
