@@ -1,10 +1,10 @@
 <?php
 
-namespace Tools;
+namespace Foods;
 
 use DateTime;
 
-interface ToolsInterface {
+interface FoodInterface {
     public function getId(): ?int;
     public function getName(): string;
     public function getType(): string;
