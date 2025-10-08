@@ -6,7 +6,6 @@ class Database implements DatabaseInterface {
     private $pdo;
 
     public function __construct() {
-        // Documentation : https://www.php.net/manual/fr/function.parse-ini-file.php
         $config = parse_ini_file(self::DATABASE_CONFIGURATION_FILE, true);
 
         if (!$config) {
@@ -19,9 +18,6 @@ class Database implements DatabaseInterface {
         $username = $config['username'];
         $password = $config['password'];
 
-        // Documentation :
-        //   - https://www.php.net/manual/fr/pdo.connections.php
-        //   - https://www.php.net/manual/fr/ref.pdo-mysql.connection.php
         $this->pdo = new PDO("mysql:host=$host;port=$port;charset=utf8mb4", $username, $password);
 
         // Création de la base de données si elle n'existe pas
@@ -34,13 +30,15 @@ class Database implements DatabaseInterface {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
 
-        // Création de la table `users` si elle n'existe pas
-        $sql = "CREATE TABLE IF NOT EXISTS tools (
+        // Création de la table `food` si elle n'existe pas
+        $sql = "CREATE TABLE IF NOT EXISTS food (
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(40) NOT NULL UNIQUE,
-            type VARCHAR(40) NOT NULL,
-            date DATE NOT NULL,
-            price FLOAT NOT NULL
+            peremption DATE NOT NULL,
+            shop VARCHAR(20),
+            qty FLOAT NOT NULL,
+            unit VARCHAR(10) NOT NULL,
+            spot VARCHAR(20) NOT NULL
         );";
 
         $stmt = $this->pdo->prepare($sql);
