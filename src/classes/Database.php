@@ -33,7 +33,7 @@ class Database implements DatabaseInterface {
         // Création de la table `food` si elle n'existe pas
         $sql = "CREATE TABLE IF NOT EXISTS food (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(40) NOT NULL UNIQUE,
+            name VARCHAR(40) NOT NULL,
             peremption DATE NOT NULL,
             shop VARCHAR(20),
             qty FLOAT NOT NULL,
