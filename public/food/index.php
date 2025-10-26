@@ -29,30 +29,28 @@ $sql = "USE `$database`;";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 
-// Création de la table `users` si elle n'existe pas
-$sql = "CREATE TABLE IF NOT EXISTS users (
+$sql = "CREATE TABLE IF NOT EXISTS food (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    age INT NOT NULL
+            name VARCHAR(40) NOT NULL,
+            peremption DATE NOT NULL,
+            shop VARCHAR(20),
+            qty FLOAT NOT NULL,
+            unit VARCHAR(10) NOT NULL,
+            spot VARCHAR(20) NOT NULL
 );";
 
 $stmt = $pdo->prepare($sql);
 
 $stmt->execute();
 
-// Définition de la requête SQL pour récupérer tous les utilisateurs
-$sql = "SELECT * FROM users";
+// Définition de la requête SQL pour récupérer tous les aliments
+$sql = "SELECT * FROM food";
 
-// Préparation de la requête SQL
 $stmt = $pdo->prepare($sql);
 
-// Exécution de la requête SQL
 $stmt->execute();
 
-// Récupération de tous les utilisateurs
-$users = $stmt->fetchAll();
+$food = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -64,33 +62,38 @@ $users = $stmt->fetchAll();
     <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 
-    <title>Gestion des utilisateur.trices | MyApp</title>
+    <title>Gestion des aliments | MyApp</title>
 </head>
 
 <body>
     <main class="container">
-        <h1>Gestion des utilisateur.trices</h1>
+        <h1>Gestion des aliments</h1>
 
-        <h2>Liste des utilisateur.trices</h2>
+        <h2>Liste des aliments</h2>
 
-        <p><a href="create.php"><button>Créer un.e nouvel.le utilisateur.trice</button></a></p>
+        <p><a href="create.php"><button>Ajouter un nouvel aliment</button></a></p>
 
         <table>
             <thead>
                 <tr>
-                    <th>Prénom</th>
                     <th>Nom</th>
-                    <th>Email</th>
-                    <th>Âge</th>
+                    <th>Date de péremption</th>
+                    <th>Magasin</th>
+                    <th>Quantité</th>
+                    <th>Unité</th>
+                    <th>Emplacement</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($users as $user) { ?>
+                <?php foreach ($food as $f) { ?>
                     <tr>
-                        <td><?= htmlspecialchars($user['first_name']) ?></td>
-                        <td><?= htmlspecialchars($user['last_name']) ?></td>
-                        <td><?= htmlspecialchars($user['email']) ?></td>
-                        <td><?= htmlspecialchars($user['age']) ?></td>
+                        <td><?= htmlspecialchars($f['name']) ?></td>
+                        <td><?= htmlspecialchars($f['peremption']) ?></td>
+                        <td><?= htmlspecialchars($f['shop']) ?></td>
+                        <td><?= htmlspecialchars($f['qty']) ?></td>
+                        <td><?= htmlspecialchars($f['unit']) ?></td>
+                        <td><?= htmlspecialchars($f['spot']) ?></td>
+
                     </tr>
                 <?php } ?>
             </tbody>

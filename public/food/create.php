@@ -1,5 +1,7 @@
 <?php
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
+require __DIR__ . '/../../src/utils/autoloader.php';
+
 
 // Documentation : https://www.php.net/manual/fr/function.parse-ini-file.php
 $config = parse_ini_file(DATABASE_CONFIGURATION_FILE, true);
@@ -29,13 +31,14 @@ $sql = "USE `$database`;";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 
-// Création de la table `users` si elle n'existe pas
-$sql = "CREATE TABLE IF NOT EXISTS users (
+$sql = "CREATE TABLE IF NOT EXISTS food (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    age INT NOT NULL
+            name VARCHAR(40) NOT NULL,
+            peremption DATE NOT NULL,
+            shop VARCHAR(20),
+            qty FLOAT NOT NULL,
+            unit VARCHAR(10) NOT NULL,
+            spot VARCHAR(20) NOT NULL
 );";
 
 $stmt = $pdo->prepare($sql);
@@ -45,60 +48,76 @@ $stmt->execute();
 // Gère la soumission du formulaire
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Récupération des données du formulaire
-    $firstName = $_POST["first-name"];
-    $lastName = $_POST["last-name"];
-    $email = $_POST["email"];
-    $age = $_POST["age"];
+    $name = $_POST["name"];
+    $peremption = $_POST["peremption"];
+    $shop = $_POST["shop"];
+    $qty = $_POST["qty"];
+    $unit = $_POST["unit"];
+    $spot = $_POST["spot"];
+
 
     $errors = [];
 
-    if (empty($firstName) || strlen($firstName) < 2) {
-        $errors[] = "Le prénom doit contenir au moins 2 caractères.";
+// à checker
+
+    if (empty($name) || strlen($firstName) < 2) {
+        $errors[] = "Le nom de l'aliment doit contenir au moins 2 caractères.";
     }
 
-    if (empty($lastName) || strlen($lastName) < 2) {
-        $errors[] = "Le nom doit contenir au moins 2 caractères.";
+
+    if (!empty($shop) && strlen($shop) < 2) {
+        $errors[] = "Le nom du magasin doit contenir au moins 2 caractères.";
     }
 
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if ($qty < 0) {
+        $errors[] = "La quantité doit être un nombre positif.";
+    }
+
+    // on va ptetre mettre une liste déroulante?
+    if (empty($unit)) {
+        $errors[] = "La date de péremption est obligatoire.";
+    }
+
+    // aussi liste déroulante
+    if (empty($spot)) {
         $errors[] = "Un email valide est requis.";
     }
-
-    if ($age < 0) {
-        $errors[] = "L'âge doit être un nombre positif.";
-    }
+    
 
     // Si pas d'erreurs, insertion dans la base de données
     if (empty($errors)) {
-        // Définition de la requête SQL pour ajouter un utilisateur
-        $sql = "INSERT INTO users (first_name, last_name, email, age) VALUES (:first_name, :last_name, :email, :age)";
+        $sql = "INSERT INTO food (name, peremption, shop, qty, unit, spot) VALUES (:name, :peremption, :shop, :qty, :unit, :spot)";
 
-        // Définition de la requête SQL pour ajouter un utilisateur
-        $sql = "INSERT INTO users (
-            first_name,
-            last_name,
-            email,
-            age
+        $sql = "INSERT INTO food (
+            name,
+            peremption,
+            shop,
+            qty,
+            unit,
+            spot
         ) VALUES (
-            :first_name,
-            :last_name,
-            :email,
-            :age
+            :peremption,
+            :shop,
+            :qty,
+            :unit,
+            :spot
         )";
 
         // Préparation de la requête SQL
         $stmt = $pdo->prepare($sql);
 
         // Lien avec les paramètres
-        $stmt->bindValue(':first_name', $firstName);
-        $stmt->bindValue(':last_name', $lastName);
-        $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':age', $age);
+        $stmt->bindValue(':name', $name);
+        $stmt->bindValue(':peremption', $peremption);
+        $stmt->bindValue(':shop', $shop);
+        $stmt->bindValue(':qty', $qty);
+        $stmt->bindValue(':unit', $unit);
+        $stmt->bindValue(':spot', $spot);
 
-        // Exécution de la requête SQL pour ajouter un utilisateur
+
         $stmt->execute();
 
-        // Redirection vers la page d'accueil avec tous les utilisateurs
+        // Redirection vers la page d'accueil avec tous les aliments
         header("Location: index.php");
         exit();
     }
@@ -114,12 +133,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 
-    <title>Créer un.e nouvel.le utilisateur.trice | MyApp</title>
+    <title>Créer un nouvel aliment | MyApp</title>
 </head>
 
 <body>
     <main class="container">
-        <h1>Créer un.e nouvel.le utilisateur.trice</h1>
+        <h1>Créer un nouvel aliment</h1>
 
         <?php if ($_SERVER["REQUEST_METHOD"] === "POST") { ?>
             <?php if (empty($errors)) { ?>
@@ -134,8 +153,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <?php } ?>
         <?php } ?>
 
+        <!-- à changer -->
         <form action="create.php" method="POST">
-            <label for="first-name">Prénom</label>
+            <label for="name">Nom</label>
             <input type="text" id="first-name" name="first-name" value="<?= htmlspecialchars($firstName ?? '') ?>" required minlength="2">
 
             <label for="last-name">Nom</label>

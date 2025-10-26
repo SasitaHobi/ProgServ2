@@ -18,7 +18,7 @@
         <p>Bienvenue sur la page d'accueil de Graille.</p>
 
 
-        <p><a href="tools/index.php"><button>Aller à la gestion des aliments</button></a></p>
+        <p><a href="food/index.php"><button>Aller à la gestion des aliments</button></a></p>
     </main>
 </body>
 

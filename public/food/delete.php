@@ -1,18 +1,14 @@
 <?php
 require __DIR__ . '/../../src/utils/autoloader.php';
 
-use Tools\ToolsManager;
+use Food\FoodManager;
 
-// Création d'une instance de UsersManager
-$toolsManager = new ToolsManager();
+$foodManager = new FoodManager();
 
-// Vérification si l'ID de l'utilisateur est passé dans l'URL
 if (isset($_GET["id"])) {
-    // Récupération de l'ID de l'utilisateur de la superglobale `$_GET`
-    $toolId = $_GET["id"];
+    $foodId = $_GET["id"];
 
-    // Suppression de l'utilisateur correspondant à l'ID
-    $toolsManager->removeTool($toolId);
+    $foodManager->removeFood($foodId);
 
     header("Location: index.php");
     exit();

@@ -11,12 +11,12 @@ class Food implements FoodInterface {
     private string $group;
     private DateTime $date;
     private string $shop;
-    private float $quantity;
+    private float $qty;
     private string $unit;
     private string $spot;
 
     // Constructeur pour initialiser l'objet
-    public function __construct(?int $id, string $name, string $group, DateTime $date, float $quantity, string $unit, ) {
+    public function __construct(?int $id, string $name, string $group, DateTime $date, float $qty, string $unit, ) {
         // Vérification des données
         if (strlen($name) < 2) {
             throw new \InvalidArgumentException("Le nom doit contenir au moins 2 caractères.");
