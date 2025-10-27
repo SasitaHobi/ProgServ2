@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $errors = [];
 
-// à checker
+    // à checker
 
     if (empty($name) || strlen($firstName) < 2) {
         $errors[] = "Le nom de l'aliment doit contenir au moins 2 caractères.";
@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($spot)) {
         $errors[] = "Un email valide est requis.";
     }
-    
+
 
     // Si pas d'erreurs, insertion dans la base de données
     if (empty($errors)) {
@@ -142,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <?php if ($_SERVER["REQUEST_METHOD"] === "POST") { ?>
             <?php if (empty($errors)) { ?>
-                <p style="color: green;">Le formulaire a été soumis avec succès !</p>
+                <p style="color: green;">L'aliment a été ajouté avec succès !</p>
             <?php } else { ?>
                 <p style="color: red;">Le formulaire contient des erreurs :</p>
                 <ul>
@@ -156,17 +156,34 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <!-- à changer -->
         <form action="create.php" method="POST">
             <label for="name">Nom</label>
-            <input type="text" id="first-name" name="first-name" value="<?= htmlspecialchars($firstName ?? '') ?>" required minlength="2">
+            <input type="text" id="name" name="name" value="<?= htmlspecialchars($name ?? '') ?>" required minlength="2">
 
-            <label for="last-name">Nom</label>
-            <input type="text" id="last-name" name="last-name" value="<?= htmlspecialchars($lastName ?? '') ?>" required minlength="2">
+            <label for="peremption">Date de péremption</label>
+            <input type="date" id="peremption" name="peremption" value="<?= htmlspecialchars($peremption ?? '') ?>" required>
 
-            <label for="email">E-mail</label>
-            <input type="email" id="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>" required>
+            <label for="shop">Magasin</label>
+            <input type="text" id="shop" name="shop" value="<?= htmlspecialchars($shop ?? '') ?>">
 
-            <label for="age">Âge</label>
-            <input type="number" id="age" name="age" value="<?= htmlspecialchars($age ?? '') ?>" required min="0">
+            <label for="qty">Quantité</label>
+            <input type="number" id="qty" name="qty" value="<?= htmlspecialchars($qty ?? '') ?>" required min="0">
 
+            <label for="unit">Unité</label>
+            <select id="unit" name="unit" required>
+                <option value="paquet">paquet</option>
+                <option value="ml">mililitre</option>
+                <option value="L">litre</option>
+                <option value="gr">gramme</option>
+                <option value="kilo">kilogramme</option>
+            </select>
+
+            <label for="spot">Emplacement</label>
+            <select id="spot" name="spot" required>
+                <option value="cupboard">Armoire</option>
+                <option value="fridge">Réfrigérateur</option>
+                <option value="freezer">Congélateur</option>
+                <option value="cellar">Cave</option>
+
+            </select>
             <button type="submit">Créer</button>
         </form>
     </main>
