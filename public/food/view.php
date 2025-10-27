@@ -42,58 +42,41 @@ if (isset($_GET["id"])) {
         <p><a href="index.php">Retour à l'accueil</a></p>
         <p>Utilise cette page pour visualiser un aliment.</p>
 
-        <!-- A TOUT MODIFIER -->
+        <!-- A VERIFIER, MODIF FROM PETS TO FOOD -->
         <form>
-            <label for="name">Nom :</label>
-            <input type="text" id="name" value="<?= htmlspecialchars($pet["name"]) ?>" disabled />
+            <label for="name">Nom de l'aliment :</label>
+            <input type="text" id="name" value="<?= htmlspecialchars($food["name"]) ?>" disabled />
 
-            <label for="species">Espèce :</label>
-            <select id="species" disabled>
-                <?php foreach (Food::SPECIES as $key => $value) { ?>
-                    <option value="<?= $key ?>" <?= $pet["species"] == $key ? "selected" : "" ?>><?= $value ?></option>
+            <label for="shop">Magasin :</label>
+            <input type="text" id="shop" value="<?= htmlspecialchars($food['shop']) ?>" disabled />
+
+            <label for="qty">Quantité :</label>
+            <input type="number" id="qty" value="<?= htmlspecialchars($food['qty']) ?>" disabled />
+
+            <label for="unit">Unité :</label>
+            <select id="unit" disabled>
+                <?php foreach (Food::UNITS as $key => $value) { ?>
+                    <option value="<?= $key ?>" <?= $food['unit'] == $key ? 'selected' : '' ?>><?= $value ?></option>
                 <?php } ?>
             </select>
 
-            <label for="nickname">Surnom :</label>
-            <input type="text" id="nickname" value="<?= htmlspecialchars($pet["nickname"]) ?>" disabled />
-
-            <fieldset>
-                <legend>Sexe :</legend>
-
-                <input type="radio" id="male" <?= $pet["sex"] == "male" ? "checked" : "" ?> disabled />
-                <label for="male">Mâle</label>
-
-                <input type="radio" id="female" <?= $pet["sex"] == "female" ? "checked" : "" ?> disabled />
-                <label for="female">Femelle</label>
-            </fieldset>
-
-            <label for="age">Âge :</label>
-            <input type="number" id="age" value="<?= htmlspecialchars($pet["age"]) ?>" disabled />
-
-            <label for="color">Couleur :</label>
-            <input type="color" id="color" value="<?= htmlspecialchars($pet["color"]) ?>" disabled />
-
-            <fieldset>
-                <legend>Personnalité :</legend>
-
-                <?php foreach (Pet::PERSONALITIES as $key => $value) { ?>
-                    <div>
-                        <input type="checkbox" id="<?= $key ?>" <?= !empty($pet["personalities"]) && in_array($key, $pet["personalities"]) ? "checked" : "" ?> disabled />
-                        <label for="<?= $key ?>"><?= $value ?></label>
-                    </div>
+            <label for="spot">Emplacement (lieu de stockage) :</label>
+            <select id="spot" disabled>
+                <?php foreach (Food::SPOTS as $key => $value) { ?>
+                    <option value="<?= $key ?>" <?= $food['spot'] == $key ? 'selected' : '' ?>><?= $value ?></option>
                 <?php } ?>
-            </fieldset>
+            </select>
 
-            <label for="size">Taille :</label>
-            <input type="number" id="size" value="<?= htmlspecialchars($pet["size"]) ?>" disabled />
+            <label for="peremption">Date de péremption :</label>
+            <input type="date" id="peremption" value="<?= htmlspecialchars($food['peremption']) ?>" disabled />
 
             <label for="notes">Notes :</label>
-            <textarea id="notes" rows="4" cols="50" disabled><?= htmlspecialchars($pet["notes"]) ?></textarea>
+            <textarea id="notes" rows="4" cols="50" disabled><?= ($food["notes"]) ?></textarea>
 
-            <a href="delete.php?id=<?= htmlspecialchars($pet["id"]) ?>">
+            <a href="delete.php?id=<?= htmlspecialchars($food["id"]) ?>">
                 <button type="button">Supprimer</button>
             </a>
-            <a href="edit.php?id=<?= htmlspecialchars($pet["id"]) ?>">
+            <a href="edit.php?id=<?= htmlspecialchars($food["id"]) ?>">
                 <button type="button">Mettre à jour</button>
             </a>
         </form>
