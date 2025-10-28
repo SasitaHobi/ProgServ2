@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // à checker
 
-    if (empty($name) || strlen($firstName) < 2) {
+    if (empty($name) || strlen($name) < 2) {
         $errors[] = "Le nom de l'aliment doit contenir au moins 2 caractères.";
     }
 
