@@ -1,9 +1,9 @@
 <?php
 
-namespace Foods;
+namespace Food;
 
-interface FoodsManagerInterface {
-    public function getFoods(): array;
+interface FoodManagerInterface {
+    public function getFood(): array;
     public function addFood(Food $Food): int;
     public function removeFood(int $id): bool;
 }

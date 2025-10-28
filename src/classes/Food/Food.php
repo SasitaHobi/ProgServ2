@@ -1,6 +1,6 @@
 <?php
 
-namespace Foods;
+namespace Food;
 
 use DateTime;
 

@@ -1,5 +1,5 @@
 <?php
-const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
+const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../../src/config/database.ini';
 require __DIR__ . '/../../src/utils/autoloader.php';
 
 
