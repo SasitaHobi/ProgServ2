@@ -17,8 +17,8 @@ class FoodManager implements FoodManagerInterface
 
     public function getFood(): array
     {
-        // Définition de la requête SQL pour récupérer tous les utilisateurs
-        $sql = "SELECT * FROM Food";
+        // Définition de la requête SQL pour récupérer tous les aliments
+        $sql = "SELECT * FROM food";
 
         // Préparation de la requête SQL
         $stmt = $this->database->getPdo()->prepare($sql);
@@ -26,62 +26,71 @@ class FoodManager implements FoodManagerInterface
         // Exécution de la requête SQL
         $stmt->execute();
 
-        // Récupération de tous les utilisateurs
-        $Food = $stmt->fetchAll();
+        // Récupération de tous les aliments
+        $food = $stmt->fetchAll();
 
-        // Transformation des tableaux associatifs en objets User
-        $Food = array_map(function ($FoodData) {
+        // Transformation des tableaux associatifs en objets Food
+        $food = array_map(function ($foodData) {
             return new Food(
-                $FoodData['id'],
-                $FoodData['name'],
-                $FoodData['type'],
-                new \DateTime($FoodData['date']),
-                $FoodData['price']
+                $foodData['id'],
+                $foodData['name'],
+                new \DateTime($foodData['peremption']),
+                $foodData['shop'],
+                $foodData['qty'],
+                $foodData['unit'],
+                $foodData['spot'],
             );
-        }, $Food);
+        }, $food);
 
-        // Retour de tous les utilisateurs
-        return $Food;
+        // Retour de tous les aliments
+        return $food;
     }
 
-    public function addFood(Food $Food): int
+    public function addFood(Food $food): int
     {
-        // Définition de la requête SQL pour ajouter un utilisateur
-        $sql = "INSERT INTO Food (
+        // Définition de la requête SQL pour ajouter un aliment
+        $sql = "INSERT INTO food (
             name,
-            type,
-            date,
-            price
+            peremption,
+            shop,
+            qty,
+            unit,
+            spot
         ) VALUES (
             :name,
-            :type,
-            :date,
-            :price
+            :peremption,
+            :shop,
+            :qty,
+            :unit,
+            :spot
         )";
 
         // Préparation de la requête SQL
         $stmt = $this->database->getPdo()->prepare($sql);
 
         // Lien avec les paramètres
-        $stmt->bindValue(':name', $Food->getName());
-        $stmt->bindValue(':type', $Food->getType());
-        $stmt->bindValue(':date', $Food->getDate()->format('Y-m-d'));
-        $stmt->bindValue(':price', $Food->getPrice());
+        $stmt->bindValue(':name', $food->getName());
+        $stmt->bindValue(':peremption', $food->getPeremption());
+        $stmt->bindValue(':shop', $food->getShop());
+        $stmt->bindValue(':qty', $food->getQty());
+        $stmt->bindValue(':unit', $food->getUnit());
+        $stmt->bindValue(':spot', $food->getSpot());
 
-        // Exécution de la requête SQL pour ajouter un utilisateur
+
+        // Exécution de la requête SQL pour ajouter un aliment
         $stmt->execute();
 
-        // Récupération de l'identifiant de l'utilisateur ajouté
-        $FoodId = $this->database->getPdo()->lastInsertId();
+        // Récupération de l'identifiant de l'aliment ajouté
+        $foodId = $this->database->getPdo()->lastInsertId();
 
-        // Retour de l'identifiant de l'utilisateur ajouté.
-        return $FoodId;
+        // Retour de l'identifiant de l'aliment ajouté.
+        return $foodId;
     }
 
     public function removeFood(int $id): bool
     {
-        // Définition de la requête SQL pour supprimer un utilisateur
-        $sql = "DELETE FROM Food WHERE id = :id";
+        // Définition de la requête SQL pour supprimer un aliment
+        $sql = "DELETE FROM food WHERE id = :id";
 
         // Préparation de la requête SQL
         $stmt = $this->database->getPdo()->prepare($sql);
@@ -89,7 +98,7 @@ class FoodManager implements FoodManagerInterface
         // Lien avec le paramètre
         $stmt->bindValue(':id', $id);
 
-        // Exécution de la requête SQL pour supprimer un utilisateur
+        // Exécution de la requête SQL pour supprimer un aliment
         return $stmt->execute();
     }
 }

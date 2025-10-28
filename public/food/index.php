@@ -82,6 +82,7 @@ $food = $stmt->fetchAll();
                     <th>Quantité</th>
                     <th>Unité</th>
                     <th>Emplacement</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -93,7 +94,16 @@ $food = $stmt->fetchAll();
                         <td><?= htmlspecialchars($f['qty']) ?></td>
                         <td><?= htmlspecialchars($f['unit']) ?></td>
                         <td><?= htmlspecialchars($f['spot']) ?></td>
-
+                        <td>
+                            <a href="view.php?id=<?= htmlspecialchars($f["id"]) ?>">
+                                <button type="button">Visualiser</button>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="delete.php?id=<?= htmlspecialchars($f["id"]) ?>">
+                                <button type="button">Supprimer</button>
+                            </a>
+                        </td>
                     </tr>
                 <?php } ?>
             </tbody>

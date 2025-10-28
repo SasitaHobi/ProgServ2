@@ -35,7 +35,7 @@ $sql = "CREATE TABLE IF NOT EXISTS food (
     id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(40) NOT NULL,
             peremption DATE NOT NULL,
-            shop VARCHAR(20),
+            shop VARCHAR(20),            
             qty FLOAT NOT NULL,
             unit VARCHAR(10) NOT NULL,
             spot VARCHAR(20) NOT NULL
@@ -73,20 +73,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors[] = "La quantité doit être un nombre positif.";
     }
 
-    // on va ptetre mettre une liste déroulante?
     if (empty($unit)) {
-        $errors[] = "La date de péremption est obligatoire.";
+        $errors[] = "L'unité est obligatoire.";
     }
 
     // aussi liste déroulante
     if (empty($spot)) {
-        $errors[] = "Un email valide est requis.";
+        $errors[] = "L'emplacement est obligatoire.";
     }
 
 
     // Si pas d'erreurs, insertion dans la base de données
     if (empty($errors)) {
-        $sql = "INSERT INTO food (name, peremption, shop, qty, unit, spot) VALUES (:name, :peremption, :shop, :qty, :unit, :spot)";
 
         $sql = "INSERT INTO food (
             name,
@@ -96,6 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             unit,
             spot
         ) VALUES (
+            :name,
             :peremption,
             :shop,
             :qty,
@@ -109,7 +108,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Lien avec les paramètres
         $stmt->bindValue(':name', $name);
         $stmt->bindValue(':peremption', $peremption);
-        $stmt->bindValue(':shop', $shop);
+
+        if (!empty($shop)) {
+            $shopParam = $shop; // si shop n'est pas vide, on prend sa valeur
+        } else {
+            $shopParam = null;  // si shop est vide, on met NULL pour la base
+        }
+        $stmt->bindValue(':shop', $shopParam, PDO::PARAM_STR);
+
         $stmt->bindValue(':qty', $qty);
         $stmt->bindValue(':unit', $unit);
         $stmt->bindValue(':spot', $spot);
@@ -169,10 +175,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <label for="unit">Unité</label>
             <select id="unit" name="unit" required>
-                <option value="paquet">paquet</option>
+                <option value="pack">paquet</option>
+                <option value="piece">pièce</option>
                 <option value="ml">mililitre</option>
-                <option value="L">litre</option>
-                <option value="gr">gramme</option>
+                <option value="l">litre</option>
+                <option value="g">gramme</option>
                 <option value="kilo">kilogramme</option>
             </select>
 
