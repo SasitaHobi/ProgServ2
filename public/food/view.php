@@ -2,6 +2,7 @@
 require __DIR__ . '/../../src/utils/autoloader.php';
 
 use Food\FoodManager;
+use Food\Food;
 
 $foodManager = new FoodManager();
 
@@ -47,6 +48,9 @@ if (isset($_GET["id"])) {
             <label for="name">Nom de l'aliment :</label>
             <input type="text" id="name" value="<?= htmlspecialchars($food["name"]) ?>" disabled />
 
+             <label for="peremption">Date de péremption :</label>
+            <input type="date" id="peremption" value="<?= htmlspecialchars($food['peremption']) ?>" disabled />
+
             <label for="shop">Magasin :</label>
             <input type="text" id="shop" value="<?= htmlspecialchars($food['shop']) ?>" disabled />
 
@@ -55,23 +59,17 @@ if (isset($_GET["id"])) {
 
             <label for="unit">Unité :</label>
             <select id="unit" disabled>
-                <?php foreach (Food::UNITS as $key => $value) { ?>
+                <?php foreach (Food::UNIT as $key => $value) { ?>
                     <option value="<?= $key ?>" <?= $food['unit'] == $key ? 'selected' : '' ?>><?= $value ?></option>
                 <?php } ?>
             </select>
 
             <label for="spot">Emplacement (lieu de stockage) :</label>
             <select id="spot" disabled>
-                <?php foreach (Food::SPOTS as $key => $value) { ?>
+                <?php foreach (Food::SPOT as $key => $value) { ?>
                     <option value="<?= $key ?>" <?= $food['spot'] == $key ? 'selected' : '' ?>><?= $value ?></option>
                 <?php } ?>
             </select>
-
-            <label for="peremption">Date de péremption :</label>
-            <input type="date" id="peremption" value="<?= htmlspecialchars($food['peremption']) ?>" disabled />
-
-            <label for="notes">Notes :</label>
-            <textarea id="notes" rows="4" cols="50" disabled><?= ($food["notes"]) ?></textarea>
 
             <a href="delete.php?id=<?= htmlspecialchars($food["id"]) ?>">
                 <button type="button">Supprimer</button>
